@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { ethers } from "ethers";
 import "./App.css";
+import abi from "./utils/WavePortal.json";
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const contractAddress = "0x9351CF93BE78a9C77Fcf6818205c23Df14Ef647F";
+  const contractABI = abi.abi;
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -47,6 +53,37 @@ const App = () => {
     }
   }
 
+  const wave = async () => {
+    try {
+      setIsLoading(true);
+      const { ethereum } = window;
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+        let count = await wavePortalContract.getTotalWaves();
+        console.log("Retrieved total wave count...", count.toNumber());
+
+        const waveTxn = await wavePortalContract.wave();
+        console.log("Mining...", waveTxn.hash);
+
+        await waveTxn.wait();
+        console.log("Mined -- ", waveTxn.hash);
+
+        count = await wavePortalContract.getTotalWaves();
+        console.log("Retrieved total wave count...", count.toNumber());
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
@@ -59,11 +96,11 @@ const App = () => {
         </div>
 
         <div className="bio">
-          I am bruno and I'm working on web3 dapps so that's pretty cool right? Connect your Ethereum wallet and wave at me!
+          I am bruno and I'm working on web3 apps so that's pretty cool right? Connect your Ethereum wallet and wave at me!
         </div>
 
-        <button className="waveButton" onClick={null}>
-          Wave at Me
+        <button className="waveButton" onClick={wave} disabled={isLoading}>
+          {!isLoading ? "Wave at Me" : "Loading..."}
         </button>
 
         {!currentAccount && (

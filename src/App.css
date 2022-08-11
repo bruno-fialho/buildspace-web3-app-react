@@ -1,8 +1,10 @@
 .mainContainer {
   display: flex;
   justify-content: center;
-  width: 100%;
-  margin-top: 64px;
+  width: 100vw;
+  height: 100vh;
+  background-color: #121212;
+  color: #03dac5;
 }
 
 .dataContainer {
@@ -20,15 +22,19 @@
 
 .bio {
   text-align: center;
-  color: gray;
-  margin-top: 16px;
+  color: #bb86fc;
+  margin-top: 48px;
 }
 
 .waveButton {
   cursor: pointer;
-  margin-top: 16px;
-  padding: 8px;
+  margin-top: 24px;
+  width: 120px;
+  align-self: center;
+  padding: 12px;
   border: 0;
-  border-radius: 5px;
-  
+  border-radius: 12px;
+  font-weight: bold;
+  background-color: #03dac5;
+  color: #121212;
 }
