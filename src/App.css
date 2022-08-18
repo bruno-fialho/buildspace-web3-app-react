@@ -38,3 +38,20 @@
   background-color: #03dac5;
   color: #121212;
 }
+
+.waveButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.waveContainer {
+  color: #fff;
+  background-color: #212121;
+  margin-top: 16px;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.waveText {
+  margin-top: 4px;
+}
